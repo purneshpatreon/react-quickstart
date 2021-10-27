@@ -5,6 +5,7 @@ import "../App.css";
 import "./../assets/scss/App.scss";
 import Main from "./Main";
 import Main1 from "./Main1";
+import PO_Entry from "./PO_Entry";
 
 class App extends React.Component<Record<string, unknown>, undefined> {
   dockBar: SidebarComponent;
@@ -54,13 +55,9 @@ class App extends React.Component<Record<string, unknown>, undefined> {
                     </SidebarComponent>
                     <div id="main-content container-fluid col-md-12 ">
                     <div id="main-area">
-                          <Main></Main>
-                          <span></span>
-                          <hr className="rounded"></hr>
-                          <Main1></Main1>
-                          <span></span>
-                          <hr className="rounded"></hr>
-                        </div>     
+                        <PO_Entry></PO_Entry>
+                        <Main> </Main>
+                    </div>     
                     </div>
                 </div>
             </div>  

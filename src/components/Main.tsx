@@ -8,6 +8,35 @@ import { DataManager } from "@syncfusion/ej2-data";
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
 
 export default class Main extends React.Component<Record<string, unknown>, undefined> {
+  constructor(props){
+    super(props);
+    const data2 = new DataManager({
+      url: "https://js.syncfusion.com/demos/ejServices/Wcf/Northwind.svc/Orders/",
+    })
+    if (data2){
+      this.state = {table_data: [{
+        "PO_ID": 123456,
+        "PO_Number": 19292,
+        "Created_date": "2021-10-11",
+        "Vendor": "ABCD",
+        "program": "H4"
+      },
+      {
+        "PO_ID": 123456,
+        "PO_Number": 19292,
+        "Created_date": "2021-10-11",
+        "Vendor": "ABCD",
+        "program": "H4"
+      },{
+        "PO_ID": 123456,
+        "PO_Number": 19292,
+        "Created_date": "2021-10-11",
+        "Vendor": "ABCD",
+        "program": "H4"
+      }]}
+    }
+    this.generatePOForm = this.generatePOForm.bind(this);
+  }
   private gridInstance: GridComponent;
   private alertDialogInstance: DialogComponent;
   public toolbarOptions: any = [{ text: 'Copy', tooltipText: 'Copy', prefixIcon: 'e-copy', id: 'copy' }, 
@@ -23,9 +52,11 @@ export default class Main extends React.Component<Record<string, unknown>, undef
     buttonModel: { content: 'OK', isPrimary: true }
   }];
 
-  public data2 = new DataManager({
-    url: "https://js.syncfusion.com/demos/ejServices/Wcf/Northwind.svc/Orders/",
-  });
+  ComponentWillMount(){
+    // Do the GET request for table data
+    // Add the table data as props
+    // Fetch the table data
+  }
 
   clickHandler(args: any) {
 
@@ -53,31 +84,56 @@ export default class Main extends React.Component<Record<string, unknown>, undef
     }
 
   }
+  generatePOForm(){
+    // get the table data from state
+    // and send to the service POST request
+    let table_data = this.state.table_data;
+    request_data = {
+      "PO_ID": 123456,
+      "PO_Number": 1233455,
+      "date": "2021-10-11",
+      "Vendor": "H4",
+      "items": [{
+          "item_no": 1,
+          "ndc": "URYRHE",
+          "item_desc": "Description",
+          "uom": "dkkdd",
+          "quantity": 10,
+          "unit_price": 1,
+          "quantity_ordered": 1,
+          "manufacturer": "JP Morgan"        
+        }]
+    }
+    generate_po_from_table();
+  }
 
   public render() {
     return (
       <div>
         <div className="control-panel">
         <div className="control-section">
-        <GridComponent dataSource={this.data2} height= {400} gridLines="Both" 
-          ref={grid => this.gridInstance = grid} 
-          allowExcelExport={true} allowPdfExport={true} selectionSettings= {this.selectionsettings}
+        <form className='form' onSubmit={this.generatePOForm}>
+          <GridComponent dataSource={this.state.table_data} height= {400} gridLines="Both" 
+            ref={grid => this.gridInstance = grid} 
+            allowExcelExport={true} allowPdfExport={true} selectionSettings= {this.selectionsettings}
 
-          toolbar={this.toolbarOptions} toolbarClick={this.clickHandler.bind(this)}>
-          <ColumnsDirective>
-            <ColumnDirective field='OrderID' headerText='Order ID' width='120' textAlign="Right" />
-            <ColumnDirective field='CustomerID' headerText='Customer ID' width='150' />
-            <ColumnDirective field='ShipCity' headerText='Ship City' width='150' />
-            <ColumnDirective field='ShipName' headerText='Ship Name' width='150' />
-          </ColumnsDirective>
-          <Inject services={[Page, Sort, Filter, Group, Toolbar,ExcelExport, PdfExport,]} />
-        </GridComponent>
-        </div>
-        <DialogComponent id="alertDialog" header='Copy with Header' visible={this.visible} 
-        animationSettings={this.animationSettings} width='300px' 
-        content='Atleast one row should be selected to copy with header' 
-        ref={alertdialog => this.alertDialogInstance = alertdialog}
-            target='.control-section' buttons={this.alertButtons} ></DialogComponent>
+            toolbar={this.toolbarOptions} toolbarClick={this.clickHandler.bind(this)}>
+            <ColumnsDirective>
+              <ColumnDirective field='PO_ID' headerText='PO ID' width='120' textAlign="Right" />
+              <ColumnDirective field='PO_Number' headerText='PO Number' width='150' />
+              <ColumnDirective field='Created_date' headerText='Created Date' width='150' />
+              <ColumnDirective field='Vendor' headerText='Vendor' width='150' />
+            </ColumnsDirective>
+            <Inject services={[Page, Sort, Filter, Group, Toolbar,ExcelExport, PdfExport,]} />
+          </GridComponent>
+            <button className="btn btn-primary pull-right">Generate PO</button>
+          </form>
+          </div>
+          <DialogComponent id="alertDialog" header='Copy with Header' visible={this.visible} 
+          animationSettings={this.animationSettings} width='300px' 
+          content='Atleast one row should be selected to copy with header' 
+          ref={alertdialog => this.alertDialogInstance = alertdialog}
+              target='.control-section' buttons={this.alertButtons} ></DialogComponent>
         </div>
       </div>
     );
