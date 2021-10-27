@@ -84,9 +84,11 @@ export default class Main extends React.Component<Record<string, unknown>, undef
     }
 
   }
-  generatePOForm(){
+  generatePOForm(event){
+    event.preventDefault()
     // get the table data from state
     // and send to the service POST request
+    debugger;
     let table_data = this.state.table_data;
     request_data = {
       "PO_ID": 123456,
@@ -104,7 +106,7 @@ export default class Main extends React.Component<Record<string, unknown>, undef
           "manufacturer": "JP Morgan"        
         }]
     }
-    generate_po_from_table();
+    generate_po_from_table(request_data);
   }
 
   public render() {
